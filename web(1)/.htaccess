@@ -1,0 +1,22 @@
+Options -Indexes
+RewriteEngine On
+
+# Autoriser l'accès aux fichiers statiques (CSS, JS, images)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Tout rediriger vers index.php (Front Controller)
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Sécurité – interdire l'accès aux fichiers sensibles
+<Files config.php>
+    Deny from all
+</Files>
+<Files database.php>
+    Deny from all
+</Files>
+
+# En-têtes de sécurité
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
